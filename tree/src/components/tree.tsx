@@ -36,11 +36,31 @@ setState(props)
  }
 
  const handleAdd=()=>{
-return (
-<li>
- ele</li>
-)
+  const newElement: Node = {
+    id: Math.floor(Math.random() * 1000),
+    name: `New Element`,
+  };
+  addElement(id, newElement); // Здесь 1 - id родительского элемента, к которому добавляем новый элемент
    }
+
+   const addElement = (parentId: number, newElement: Node) => {
+      if (id === parentId) {
+        return {
+          ...state,  
+          items: items ? [...items, newElement] : [newElement],
+        };
+      }
+      if (items){
+        return{
+          ...state,
+          items: addElement(parentId, newElement, items),
+        };
+      }
+    setState(updatedTreeData);
+  };
+
+
+
    const handleRemove=()=>{
     setState(props)
      }
