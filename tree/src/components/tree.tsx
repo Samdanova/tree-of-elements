@@ -1,5 +1,6 @@
-import React, {useState, useContext, useEffect} from 'react';
-import {default_list_values} from '../constant/constant'
+import React, {useState} from 'react';
+import {default_list_values} from '../constant/constant';
+import './tree.css'
 
 export interface Node {
     id: number;
@@ -10,9 +11,9 @@ export interface Node {
 
 export default function Tree(props : Node): JSX.Element {
     const {id, name, items, onDelete} = props;
-    // let copyListValues = [...default_list_values];
 
     //states
+    const[isFocused, setFocused]=useState(false);
     const [nodes, setNodes] = useState(items || [])
     const [stateProps, setState] = useState({id, name, items})
     const [pressedEdit, setEdit] = useState(false);
@@ -76,7 +77,8 @@ export default function Tree(props : Node): JSX.Element {
             } 
         });
     return (
-        <div><li><div> {
+        <div ><li><div  onMouseEnter={() => setFocused(true)} 
+        onMouseLeave={() => setFocused(false)}> {
             pressedEdit
                 ? <input value = {
                     stateProps.name
@@ -85,20 +87,32 @@ export default function Tree(props : Node): JSX.Element {
                     handleChange
                 } />
                 : stateProps.name
-        } {
+        }
+        
+      {isFocused &&
+      <>
+         {
             pressedEdit
-                ? <button onClick = {
+                ? <button className='button' onClick = {
                     handleSave
                 } > Save</button>
-                : <button onClick = {
+                : <button  className='button' onClick = {
                     handleEdit
                 } > Edit</button>
-        } < button onClick = {()=>onDelete && onDelete(id)}>Remove</button> < button onClick = {
-            handleAdd
-        } > Add</button> < button onClick = {
-            handleReset
-        } > Reset</button></div><ul> {
+        } 
+        
+        < button  className='button' onClick = {()=>onDelete && onDelete(id)}>Remove</button> 
+        < button className='button' onClick = {handleAdd} > Add</button>
+        < button className='button' onClick = {handleReset} > Reset</button>
+        </>
+      }
+        </div>
+        
+        
+        <ul> {
             treeItems
-        }</ul></li></div>
+        }</ul>
+        </li>
+        </div>
     )
 }
